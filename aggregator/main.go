@@ -3,8 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Naman15032001/tolling/types"
 	"net/http"
+	"strconv"
+
+	"github.com/Naman15032001/tolling/types"
 )
 
 func main() {
@@ -20,7 +22,36 @@ func main() {
 func makeHTTPTransport(listenAddr string, svc Aggregator) {
 	fmt.Println("HTTP Transport running on port: ", listenAddr)
 	http.HandleFunc("/aggregate", handleAggregator(svc))
+	http.HandleFunc("/invoice", handleGetInvoice(svc))
 	http.ListenAndServe(listenAddr, nil)
+}
+
+func handleGetInvoice(svc Aggregator) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		values, ok := r.URL.Query()["obu"]
+		if !ok {
+			WriteJSON(w, http.StatusBadRequest, map[string]string{
+				"error": "missing OBU ID",
+			})
+			return
+		}
+		obuid, err := strconv.Atoi(values[0])
+		if err != nil {
+			WriteJSON(w, http.StatusBadRequest, map[string]string{
+				"error": "invalid OBU ID",
+			})
+			return
+		}
+		invoice, err := svc.CalculateInvoice(obuid)
+		if err != nil {
+			WriteJSON(w, http.StatusInternalServerError, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+		WriteJSON(w, http.StatusOK, invoice)
+	}
+
 }
 
 func handleAggregator(svc Aggregator) http.HandlerFunc {
@@ -43,6 +74,6 @@ func handleAggregator(svc Aggregator) http.HandlerFunc {
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	w.WriteHeader(status)
-	w.Header().Add("Content-type", "application/json")
+	w.Header().Add("Content-Type", "application/json")
 	return json.NewEncoder(w).Encode(v)
 }
