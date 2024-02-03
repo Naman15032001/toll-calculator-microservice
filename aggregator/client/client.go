@@ -7,4 +7,5 @@ import (
 
 type Client interface {
 	Aggregate(context.Context, *types.AggregrateRequest) error
+	GetInvoice(context.Context, int) (*types.Invoice, error)
 }

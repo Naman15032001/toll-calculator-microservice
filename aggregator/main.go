@@ -110,7 +110,7 @@ func handleAggregator(svc Aggregator) http.HandlerFunc {
 }
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
-	w.WriteHeader(status)
 	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(status)
 	return json.NewEncoder(w).Encode(v)
 }

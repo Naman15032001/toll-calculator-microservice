@@ -2,6 +2,10 @@ obu:
 	@go build -o bin/obu obu/main.go
 	@./bin/obu
 
+gateway:
+	@go build -o bin/gateway ./gateway
+	@./bin/gateway
+
 reciever:
 	@go build -o bin/reciever ./data_reciever
 	@./bin/reciever
@@ -17,4 +21,4 @@ aggregator:
 proto:
 	protoc --go_out=. --go_opt=paths=source_relative  --go-grpc_out=. --go-grpc_opt=paths=source_relative  types/ptypes.proto 
 
-.PHONY: obu aggregator
+.PHONY: obu aggregator gateway
