@@ -31,14 +31,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := c.Aggregate(context.Background(), &types.AggregrateRequest{
+	if err := c.Aggregate(context.Background(), &types.AggregrateRequest{
 		ObuId: 1,
 		Value: 13.33,
 		Unix:  time.Now().UnixNano(),
 	}); err != nil {
 		log.Fatal(err)
 	}
-	log.Fatal(makeHTTPTransport(listenAddr, svc)) 
+	log.Fatal(makeHTTPTransport(listenAddr, svc))
 }
 
 func makeHTTPTransport(listenAddr string, svc Aggregator) error {
