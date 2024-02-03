@@ -1,0 +1,15 @@
+syntax ="proto3";
+
+option go_package = "github.com/Naman15032001/tolling/types";
+
+message AggregrateRequest {
+    int32 ObuId = 1;
+    double Value =2;
+    int64 Unix  =3;
+}
+
+message None {}
+
+service Aggregator {
+    rpc Aggregate(AggregrateRequest) returns (None) ;
+}
