@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"time"
+
 	// "fmt"
 	"log"
 	"net/http"
@@ -27,7 +29,7 @@ func main() {
 
 func (h *InvoiceHandler) handleGetInvoice(w http.ResponseWriter, r *http.Request) error {
 	//return fmt.Errorf("boom") test error handler
-	inv, err := h.client.GetInvoice(context.Background(), 3434)
+	inv, err := h.client.GetInvoice(context.Background(), 6494762)
 	if err != nil {
 		return err
 	}
@@ -52,6 +54,12 @@ func writeJSON(w http.ResponseWriter, status int, v any) error {
 
 func makeAPIFunc(fn apiFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		defer func(start time.Time) {
+			logrus.WithFields(logrus.Fields{
+				"took": time.Since(start),
+				"uri":  r.RequestURI,
+			}).Info("REQ ::")
+		}(time.Now())
 		if err := fn(w, r); err != nil {
 			writeJSON(w, http.StatusInternalServerError, map[string]string{
 				"error": err.Error(),

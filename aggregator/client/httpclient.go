@@ -28,7 +28,8 @@ func (c *HTTPClient) GetInvoice(ctx context.Context, id int) (*types.Invoice, er
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest("POST", c.Endpoint+"/invoice", bytes.NewReader(b))
+	endpoint := fmt.Sprintf("%s/%s?obu=%d", c.Endpoint, "invoice", id)
+	req, err := http.NewRequest("POST", endpoint, bytes.NewReader(b))
 	if err != nil {
 		return nil, err
 	}

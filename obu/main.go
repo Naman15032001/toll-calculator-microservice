@@ -5,7 +5,7 @@ import (
 	"github.com/Naman15032001/tolling/types"
 	"github.com/gorilla/websocket"
 	"log"
-	"math"
+	//"math"
 	"math/rand"
 	"time"
 )
@@ -51,7 +51,8 @@ func main() {
 func genOBUIDS(n int) []int {
 	ids := make([]int, n)
 	for i := 0; i < len(ids); i++ {
-		ids[i] = rand.Intn(math.MaxInt)
+		ids[i] = rand.Intn(9999999)
+
 	}
 	return ids
 }
