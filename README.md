@@ -29,3 +29,31 @@ install protobuf and package dependencies
     go get google.golang.org/grpc
 
 ```
+
+## Installing prometheus locally in your system 
+
+```
+    git clone https://github.com/prometheus/prometheus.git
+    cd prometheus
+    make build
+```
+
+## Run the Prometheus daemon
+
+```
+./prometheus --config.file=<your_config_file>yml
+```
+
+## In the projects case that would be running from inside the project directory
+
+```
+../prometheus/prometheus --config.file=.config/prometheus.yml
+
+prometheus/prometheus --config.file=.config/prometheus.yml
+```
+
+## Installing prometheus golang client
+
+```
+go get github.com/prometheus/client_golang/prometheus
+```
